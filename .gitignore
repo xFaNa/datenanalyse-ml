@@ -1,0 +1,18 @@
+# Virtuelle Umgebung
+.venv/
+venv/
+
+# Byte-compiled / Cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyCharm / JetBrains
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python environment config
+pyenv.cfg
