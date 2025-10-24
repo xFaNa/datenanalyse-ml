@@ -1,18 +1,26 @@
-# Virtuelle Umgebung
-.venv/
-venv/
-
-# Byte-compiled / Cache files
+# ---- Python ----
 __pycache__/
 *.py[cod]
-*$py.class
+*.egg-info/
+*.egg
+*.pyo
 
-# PyCharm / JetBrains
+# ---- Virtual Envs ----
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+
+# ---- IDE & macOS ----
 .idea/
-
-# System files
 .DS_Store
-Thumbs.db
+*.iml
 
-# Python environment config
-pyenv.cfg
+# ---- Build / Logs ----
+dist/
+build/
+*.log
+
+# ---- Sonstiges ----
+Praktikum01~*/
