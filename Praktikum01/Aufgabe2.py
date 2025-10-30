@@ -12,7 +12,7 @@ plt.bar(countries, country_sizes, color="green", edgecolor="black")
 plt.xlabel("Kontinente")
 plt.ylabel("Größe in Mio. km2")
 plt.title("a) Flächen der Kontinente (Säulendiagramm)")
-plt.grid(axis="y", linestyle="--", alpha=1.0)
+plt.grid(axis="y", linestyle="--")
 
 #Diagramm anzeigen
 plt.show()

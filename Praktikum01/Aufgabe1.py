@@ -10,6 +10,7 @@ temperatur_australien = [27, 26, 23, 19, 15, 11, 11, 12, 15, 19, 22, 25]
 plt.plot(monate, temperatur_deutschland, label="Deutschland", color="blue", marker="")
 plt.plot(monate, temperatur_australien, label="Australien", color="red", marker="")
 
+
 plt.xlabel("Monate")
 plt.ylabel("Temperatur in Grad °C")
 plt.title("durchschnitlliche Monatstemperaturen")
@@ -19,4 +20,3 @@ plt.grid(True)
 # Diagramm anzeigen
 plt.show()
 
-# Diagramm speichern (nach dem Erstellen, aber vor plt.show() ist auch möglich

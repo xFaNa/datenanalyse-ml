@@ -1,28 +1,24 @@
 import pandas as pd
 
-# Aufgabenteil a)
-cities = {
-    "Wien": {
-        "country": "Österreich",
-        "area": 414.6,
-        "population": 1805681
+df = pd.DataFrame(
+    {
+        "country": ["Österreich", "Deutschland", "Schweiz"],
+        "area": [414.6, 891.85, 87.88],
+        "population": [1805681, 3562166, 378884],
     },
-    "Berlin": {
-        "country": "Deutschland",
-        "area": 891.85,
-        "population": 3562166
-    },
-    "Zürich": {
-        "country": "Schweiz",
-        "area": 87.88,
-        "population": 378884
-    }
-}
+    index=["Wien", "Berlin", "Zürich"]
+)
 
-df = pd.DataFrame(cities)
+s = df.stack()
+print(s)
 
-for city in df.columns:
-    print(f"{city:<10} country      {df.loc['country', city]}")
-    print(f"{'':<10} area         {df.loc['area', city]}")
-    print(f"{'':<10} population   {df.loc['population', city]}")
+# Aufgabenteil b)
+print("\nAlphabetisch sortiert.")
+s_sorted = s.sort_index()
+print(s_sorted)
 
+# Aufgabenteil c)
+print("\nVertauschte Indizes")
+s_swapped = s.swaplevel()
+s_swapped = s_swapped.sort_index()
+print(s_swapped)
