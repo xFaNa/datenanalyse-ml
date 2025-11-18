@@ -16,7 +16,7 @@ for var, color in zip(variety, colors):
         daten["sepal.width"],
         color=color,
         label=var,
-        alpha=0.7
+        alpha=1
     )
 
 plt.xlabel("Sepal length (cm)")
@@ -36,7 +36,7 @@ for var, color in zip(variety, colors):
         daten["petal.width"],
         color=color,
         label=var,
-        alpha= 0.7
+        alpha= 1
     )
 
 plt.xlabel("Petal length (cm)")

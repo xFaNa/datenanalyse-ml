@@ -11,7 +11,7 @@ pd.set_option("display.expand_frame_repr", False)   # Zeilen nicht umbrechen
 df = pd.read_csv("pvtest.csv", index_col=0)
 
 
-# Aufgabe 3a)
+# Aufgabe a)
 # Erste 10 Zeilen des gesamten DataFrames anzeigen
 print("Aufgabe 3a – erste 10 Zeilen des DataFrames:\n")
 print(df.head(10))
@@ -22,7 +22,7 @@ print(df.head(10))
 print("\nAufgabe 3b – Spaltennamen:\n")
 print(df.columns)
 
-# nur die vier interessierenden Merkmale auswählen
+# nur die vier Merkmale auswählen
 df_four = df[["Dci", "Dcp", "Dcu", "Temp1"]]
 
 print("\nAufgabe 3b – Dci, Dcp, Dcu, Temp1 (erste 10 Zeilen):\n")
