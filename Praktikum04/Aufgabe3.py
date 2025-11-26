@@ -11,7 +11,7 @@ pd.set_option("display.expand_frame_repr", False)   # Zeilen nicht umbrechen
 df = pd.read_csv("pvtest.csv", index_col=0)
 
 
-# Aufgabe a)
+# Aufgabenteil a)
 # Erste 10 Zeilen des gesamten DataFrames anzeigen
 print("Aufgabe 3a – erste 10 Zeilen des DataFrames:\n")
 print(df.head(10))
@@ -47,6 +47,7 @@ print(df_clean.head(10))
 
 # Aufgabenteil d
 corr = df_clean.corr()   # Korrelationsmatrix berechnen
+
 print("\nKorrelationsmatrix von Dci, Dcp, Dcu, Temp1:\n")
 print(corr)
 
@@ -54,7 +55,7 @@ print(corr)
 fig, ax = plt.subplots(figsize=(5, 4))
 
 # Matrix als Bild darstellen
-im = ax.imshow(corr, origin="upper")
+im = ax.imshow(corr,cmap="RdBu", origin="upper")
 
 # Achsenbeschriftungen setzen
 ax.set_xticks(range(len(corr.columns)))
@@ -63,8 +64,8 @@ ax.set_yticks(range(len(corr.index)))
 ax.set_yticklabels(corr.index)
 
 # Korrelationswerte in die Zellen schreiben
-for i in range(len(corr.index)):
-    for j in range(len(corr.columns)):
+for i in range(len(corr.index)):        # i = Zeile
+    for j in range(len(corr.columns)):      # j = Spalte
         ax.text(
             j, i,
             f"{corr.iloc[i, j]:.2f}",
