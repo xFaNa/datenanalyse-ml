@@ -1,7 +1,3 @@
-# ============================================================
-# Praktikum 07 – Aufgabe 1f
-# Lineare Regression zur Schätzung von Schneefall (snowfall (cm))
-# ============================================================
 
 import numpy as np
 import pandas as pd
@@ -17,15 +13,13 @@ from tensorflow import keras
 
 sns.set_style("whitegrid")
 
-# ------------------------------------------------------------
+
 # 1) Datensatz laden
-# ------------------------------------------------------------
 df = pd.read_csv("herford_weather.csv")
 print("Datensatzgröße:", df.shape)
 
-# ------------------------------------------------------------
+
 # 2) Spalten selektieren (wie in Aufgabe a vorgegeben)
-# ------------------------------------------------------------
 cols = [
     'temperature_2m (°C)', 'relativehumidity_2m (%)', 'dewpoint_2m (°C)',
     'apparent_temperature (°C)', 'pressure_msl (hPa)', 'surface_pressure (hPa)',
@@ -41,16 +35,47 @@ cols = [
     'soil_moisture_28_to_100cm (m³/m³)', 'soil_moisture_100_to_255cm (m³/m³)'
 ]
 
-df_sel = df[cols].copy()
-print("NaN-Werte gesamt:", df_sel.isna().sum().sum())
+df_selected = df[cols].copy()
+print("NaN-Werte gesamt:", df_selected.isna().sum().sum())
 
-# ------------------------------------------------------------
+
+
 # 3) Feature-Auswahl über Korrelation mit Schneefall
-# ------------------------------------------------------------
 target = "snowfall (cm)"
 
-corr = df_sel.corr(numeric_only=True)
+corr = df_selected.corr(numeric_only=True)
 corr_with_snow = corr[target].sort_values(ascending=False)
+
+# Heatmap: Korrelationen nur mit Schneefall
+plt.figure(figsize=(8, 10))
+corr_snow_only = corr[[target]].sort_values(by=target, ascending=False)
+
+sns.heatmap(
+    corr_snow_only,
+    annot=True,
+    cmap="coolwarm",
+    center=0
+)
+
+plt.title("Korrelationen mit Schneefall (snowfall (cm))")
+plt.tight_layout()
+plt.show()
+
+
+
+plt.figure(figsize=(6, 5))
+sns.scatterplot(
+    x=df_selected["precipitation (mm)"],
+    y=df_selected["snowfall (cm)"],
+    s=8,
+    alpha=0.3
+)
+plt.xlabel("Precipitation (mm)")
+plt.ylabel("Snowfall (cm)")
+plt.title("Precipitation vs Snowfall")
+plt.tight_layout()
+plt.show()
+
 
 print("\nKorrelationen mit Schneefall:")
 print(corr_with_snow)
@@ -62,11 +87,10 @@ features = [c for c in corr_abs.index if c != target][:5]
 print("\nGewählte Features für Schneefall:")
 print(features)
 
-# ------------------------------------------------------------
+
 # 4) X / y bauen, Split & StandardScaler
-# ------------------------------------------------------------
-X = df_sel[features].values
-y = df_sel[target].values
+X = df_selected[features].values
+y = df_selected[target].values
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
@@ -80,9 +104,9 @@ print("\nShapes:")
 print("X_train_scaled:", X_train_scaled.shape)
 print("X_test_scaled:", X_test_scaled.shape)
 
-# ------------------------------------------------------------
+
 # 5) epochs & batch_size testen (kleiner sinnvoller Vergleich)
-# ------------------------------------------------------------
+
 configs = [
     {"epochs": 10, "batch_size": 128},
     {"epochs": 20, "batch_size": 32},
@@ -117,25 +141,24 @@ for cfg in configs:
 
     print("Finaler val_loss:", val_loss)
 
-# ------------------------------------------------------------
+
 # 6) Bestes Modell auswählen
-# ------------------------------------------------------------
+
 best_cfg, best_val_loss, best_history, best_model = min(results, key=lambda x: x[1])
 
 print("\nBeste Konfiguration:", best_cfg)
 print("Bester finaler val_loss:", best_val_loss)
 
-# ------------------------------------------------------------
+
 # 7) R² auf Testset berechnen
-# ------------------------------------------------------------
+
 y_pred = best_model.predict(X_test_scaled).flatten()
 r2 = r2_score(y_test, y_pred)
 
 print("\nR² Wert (Schneefall):", r2)
 
-# ------------------------------------------------------------
+
 # 8) Lernkurve plotten
-# ------------------------------------------------------------
 plt.figure(figsize=(8, 5))
 plt.plot(best_history.history["loss"], label="Trainingsverlust (MSE)")
 plt.plot(best_history.history["val_loss"], label="Validierungsverlust (MSE)")
@@ -150,12 +173,11 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# ------------------------------------------------------------
-# 9) Interpretation (kurzer Hinweis)
-# ------------------------------------------------------------
+
+# 9) Interpretation
 print("\nInterpretation:")
 print(
-    "Der R²-Wert ist gering bzw. negativ. "
+    "Der R^2-Wert ist gering bzw. negativ. "
     "Schneefall ist stark ereignis- und schwellenbasiert "
     "(z.B. Temperatur um 0°C + Niederschlag) "
     "und lässt sich daher mit einer linearen Regression nur schlecht modellieren."
