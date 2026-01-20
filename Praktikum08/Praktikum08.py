@@ -6,7 +6,6 @@ from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 
 
-# -------------------------
 # 0) Daten vorbereiten
 # -------------------------
 df = pd.read_csv("rawdata_luftqualitaet.csv")
@@ -38,7 +37,6 @@ X_test = scaler.transform(X_test)
 
 
 def build_base_model(input_dim: int, l2_lambda: float | None = None) -> keras.Model:
-    """2x Dense(60) wie gefordert, optional mit L2-Regularisierung."""
     reg = keras.regularizers.l2(l2_lambda) if l2_lambda is not None else None
 
     model = keras.Sequential([
@@ -58,7 +56,7 @@ def build_base_model(input_dim: int, l2_lambda: float | None = None) -> keras.Mo
 def plot_loss(history, title: str):
     plt.figure()
     plt.plot(history.history["loss"], label="train loss")
-    plt.plot(history.history["val_loss"], label="test loss")  # eigentlich val_loss
+    plt.plot(history.history["val_loss"], label="test loss")
     plt.xlabel("epochs")
     plt.ylabel("loss (sparse cross entropy)")
     plt.grid(True)
@@ -67,10 +65,15 @@ def plot_loss(history, title: str):
     plt.show()
 
 
-# -------------------------
+# =====================================================
 # Aufgabe 1: Basismodell (ohne Callbacks)
-# -------------------------
+# =====================================================
+print("\n" + "=" * 60)
+print("AUFGABE 1 – MODELLSUMMARY")
+print("=" * 60)
+
 model1 = build_base_model(input_dim=5)
+model1.summary()
 
 history1 = model1.fit(
     X_train, y_train,
@@ -83,10 +86,15 @@ history1 = model1.fit(
 plot_loss(history1, "Aufgabe 1: Basismodell (Overfitting sichtbar)")
 
 
-# -------------------------
+# =====================================================
 # Aufgabe 2: Basismodell + EarlyStopping
-# -------------------------
+# =====================================================
+print("\n" + "=" * 60)
+print("AUFGABE 2 – MODELLSUMMARY (EarlyStopping)")
+print("=" * 60)
+
 model2 = build_base_model(input_dim=5)
+model2.summary()
 
 early_stop = keras.callbacks.EarlyStopping(
     monitor="val_loss",
@@ -106,10 +114,15 @@ history2 = model2.fit(
 plot_loss(history2, "Aufgabe 2: EarlyStopping (Overfitting reduziert)")
 
 
-# -------------------------
-# Aufgabe 3: Basismodell + L2-Regularisierung (ohne Callbacks)
-# -------------------------
+# =====================================================
+# Aufgabe 3: Basismodell + L2-Regularisierung
+# =====================================================
+print("\n" + "=" * 60)
+print("AUFGABE 3 – MODELLSUMMARY (L2-Regularisierung)")
+print("=" * 60)
+
 model3 = build_base_model(input_dim=5, l2_lambda=0.001)
+model3.summary()
 
 history3 = model3.fit(
     X_train, y_train,
